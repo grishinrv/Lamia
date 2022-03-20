@@ -12,6 +12,9 @@ public record Error
             case Models.ErrorType.ExternalServiceError:
                 ErrorType = "External service error";                
                 break;
+            case Models.ErrorType.InternalServerError:
+                ErrorType = "Internal server error";
+                break;
             default:
                 ErrorType = "Undefined";
                 break;

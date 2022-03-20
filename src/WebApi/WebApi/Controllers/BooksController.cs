@@ -6,7 +6,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class BooksController : ControllerBase
+public sealed class BooksController : ControllerBase
 {
     private readonly ILogger<BooksController> _logger;
 
@@ -19,7 +19,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet("GetByIsbn")]
-    public async Task<IActionResult> Get(string isbn)
+    public async Task<IActionResult> GetByIsbn(string isbn)
     {
         if (string.IsNullOrWhiteSpace(isbn))
             return BadRequest( new Error(ErrorType.ParameterIsMissing){Description = $"Parameter \"{nameof(isbn)}\" is missing"});
