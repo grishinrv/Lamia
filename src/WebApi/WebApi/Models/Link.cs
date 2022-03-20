@@ -1,6 +1,6 @@
 ﻿namespace WebApi.Models;
 
-public record Language
+public record Link
 {
     /// <summary>
     /// key
