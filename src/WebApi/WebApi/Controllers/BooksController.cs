@@ -14,7 +14,7 @@ public class BooksController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetByIsbn")]
+    [HttpGet("GetByIsbn")]
     public IEnumerable<Book> Get(string isbn)
     {
         return new Book[]{};
