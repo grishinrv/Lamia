@@ -5,7 +5,7 @@ using System.Text.Json;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("Books")]
 public sealed class BooksController : ControllerBase
 {
     private readonly ILogger<BooksController> _logger;
