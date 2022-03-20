@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
+using System.Text.Json;
 
 namespace WebApi.Controllers;
 
@@ -9,14 +10,36 @@ public class BooksController : ControllerBase
 {
     private readonly ILogger<BooksController> _logger;
 
+    private const string _openLibraryUrlStr = "https://openlibrary.org";
+    private readonly Uri _openLibraryUri = new Uri(_openLibraryUrlStr);
+
     public BooksController(ILogger<BooksController> logger)
     {
         _logger = logger;
     }
 
     [HttpGet("GetByIsbn")]
-    public IEnumerable<Book> Get(string isbn)
+    public async Task<IActionResult> Get(string isbn)
     {
-        return new Book[]{};
+        if (string.IsNullOrWhiteSpace(isbn))
+            return BadRequest( new Error(ErrorType.ParameterIsMissing){Description = $"Parameter \"{nameof(isbn)}\" is missing"});
+        
+        using (HttpClient apiClient = new HttpClient())
+        {
+            apiClient.BaseAddress = _openLibraryUri;
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, _openLibraryUrlStr + $"/isbn/{isbn}.json");
+            using (HttpResponseMessage response =
+                   await apiClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
+            {
+                if (!response.IsSuccessStatusCode)
+                    return StatusCode(502,
+                        new Error(ErrorType.ExternalServiceError)
+                            {Description = $"External error: {response.StatusCode}, {response.ReasonPhrase}"});
+                
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                _logger.LogTrace($"Get book by ISBN = {isbn}, openLibrary response = {apiResponse}");
+                return Ok(JsonSerializer.Deserialize<Book>(apiResponse));
+            }
+        }
     }
 }
