@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using System.Text.Json;
@@ -10,8 +11,8 @@ public sealed class BooksController : ControllerBase
 {
     private readonly ILogger<BooksController> _logger;
 
-    private const string _openLibraryUrlStr = "https://openlibrary.org";
-    private readonly Uri _openLibraryUri = new Uri(_openLibraryUrlStr);
+    private const string _openLibraryUriStr = "https://openlibrary.org";
+    private readonly Uri _openLibraryUri = new Uri(_openLibraryUriStr);
 
     public BooksController(ILogger<BooksController> logger)
     {
@@ -27,7 +28,7 @@ public sealed class BooksController : ControllerBase
         using (HttpClient apiClient = new HttpClient())
         {
             apiClient.BaseAddress = _openLibraryUri;
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, _openLibraryUrlStr + $"/isbn/{isbn}.json");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, _openLibraryUriStr + $"/isbn/{isbn}.json");
             using (HttpResponseMessage response =
                    await apiClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
             {

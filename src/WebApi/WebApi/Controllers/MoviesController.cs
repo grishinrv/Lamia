@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text;
 using System.Text.Json;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ public sealed class MoviesController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("GetByParams")]
+    [HttpPost("GetByParams")]
     public async Task<IActionResult> GetByParams(MovieParams dto)
     {
         if (dto == null)
