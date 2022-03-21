@@ -15,6 +15,9 @@ public record Error
             case Models.ErrorType.InternalServerError:
                 ErrorType = "Internal server error";
                 break;
+            case Models.ErrorType.IncorrectParameterValue:
+                ErrorType = "Parameter value is incorrect";                
+                break;
             default:
                 ErrorType = "Undefined";
                 break;

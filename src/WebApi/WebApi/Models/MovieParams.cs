@@ -11,4 +11,5 @@ public record MovieParams
     [JsonPropertyName("PlotVersion")]
     public string PlotVersion { get; init; }
 
+    public override string ToString() => $"Title: {Title}, Year: {Year}, PlotVersion: {PlotVersion}";
 }
