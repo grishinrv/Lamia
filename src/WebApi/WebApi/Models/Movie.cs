@@ -11,7 +11,7 @@ public record Movie
     [JsonPropertyName("Rated")]
     public string Rated { get; init; }
     [JsonPropertyName("Released")]
-    public DateOnly Released { get; init; }
+    public string Released { get; init; }
     [JsonPropertyName("Runtime")]
     public string Runtime { get; init; }
     [JsonPropertyName("Plot")]
@@ -75,7 +75,7 @@ public record Movie
     /// DVD
     /// </summary>
     [JsonPropertyName("DVD")]
-    public DateOnly DvdReleaseDate { get; init; }
+    public string DvdReleaseDate { get; init; }
     [JsonPropertyName("BoxOffice")]
     public string BoxOffice { get; init; }
     [JsonPropertyName("Production")]
@@ -83,5 +83,5 @@ public record Movie
     [JsonPropertyName("Website")]
     public string Website { get; init; }
     [JsonPropertyName("Response")]
-    public bool Response { get; init; }
+    public string Response { get; init; }
 }
