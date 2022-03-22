@@ -13,13 +13,15 @@ namespace WebApi.Controllers;
 public sealed class MoviesController : ControllerBase
 {
     private readonly ILogger<MoviesController> _logger;
+    private readonly IConfiguration _config;
 
     private const string _openMovieDbUriStr = "http://www.omdbapi.com";
     private readonly Uri _openMovieDbUri = new Uri(_openMovieDbUriStr);
 
-    public MoviesController(ILogger<MoviesController> logger)
+    public MoviesController(ILogger<MoviesController> logger, IConfiguration config)
     {
         _logger = logger;
+        _config = config;
     }
 
     [HttpPost("GetByParams")]
@@ -63,7 +65,9 @@ public sealed class MoviesController : ControllerBase
     {
         StringBuilder builder = new StringBuilder(_openMovieDbUriStr);
         builder.Append("/?");
-        builder.Append("t=");
+        builder.Append("apikey=");
+        builder.Append(_config["OmdbApiKey"]);
+        builder.Append("&t=");
         builder.Append(HttpUtility.UrlEncode(dto.Title));
         builder.Append("&y=");
         builder.Append(dto.Year);
