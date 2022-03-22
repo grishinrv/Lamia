@@ -2,11 +2,13 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("Books")]
+[Authorize(Roles = "User")]
 public sealed class BooksController : ControllerBase
 {
     private readonly ILogger<BooksController> _logger;

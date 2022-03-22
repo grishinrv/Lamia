@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.Json;
 using System.Web;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 
@@ -10,6 +11,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("Movies")]
+[Authorize(Roles = "User")]
 public sealed class MoviesController : ControllerBase
 {
     private readonly ILogger<MoviesController> _logger;

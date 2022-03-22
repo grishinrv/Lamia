@@ -14,7 +14,7 @@ public sealed class TokenService : ITokenService
     {
         var claims = new[] {    
             new Claim(ClaimTypes.Name, user.UserName),
-            //new Claim(ClaimTypes.Role, user.Role),
+            new Claim(ClaimTypes.Role, "User"),
             new Claim(ClaimTypes.NameIdentifier,
                 Guid.NewGuid().ToString())
         };
