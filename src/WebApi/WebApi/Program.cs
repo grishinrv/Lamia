@@ -7,7 +7,7 @@ using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddEnvironmentVariables(prefix: "webapi_");
+//builder.Configuration.AddEnvironmentVariables(prefix: "webapi_");
 // Add services to the container.
 
 builder.Services.AddControllers();
