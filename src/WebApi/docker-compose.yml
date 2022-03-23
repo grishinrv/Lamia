@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+    webapi:
+        image: ${DOCKER_REGISTRY}webapi
+        build:
+            context: .
+            dockerfile: WebApi/Dockerfile
+        
