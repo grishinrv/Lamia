@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.Middleware;
 using WebApi.Services;
@@ -56,4 +57,8 @@ app.Use(async (context, next) =>
     }
     await next();
 });
+app.UseForwardedHeaders(new ForwardedHeadersOptions {
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 app.Run();
