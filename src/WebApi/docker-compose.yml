@@ -8,6 +8,7 @@ services:
             context: .
             dockerfile: WebApi/Dockerfile
         environment:
+          WEBAPI_ALLOWED_ORIGINS: ${WEBAPI_ALLOWED_ORIGINS}
           WEBAPI_OMDBAPIKEY: ${WEBAPI_OMDBAPIKEY}
           WEBAPI_JWT_KEY: ${WEBAPI_JWT_KEY}
           WEBAPI_JWT_ISSUER: ${WEBAPI_JWT_ISSUER}

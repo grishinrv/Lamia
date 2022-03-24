@@ -25,7 +25,7 @@ public sealed class HomeController : ControllerBase
 
     [AllowAnonymous]   
     [HttpPost("Login")]  
-    public IActionResult Login(User user)
+    public IActionResult Login([FromBody] User user)
     {
         if (user == null)
         {
