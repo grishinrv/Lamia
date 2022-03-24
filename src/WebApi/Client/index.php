@@ -26,7 +26,7 @@ function getMethod(array $routes, $path) {
 
 
 function login() {
-    return 'login form';
+    include('login.php');
 }
 
 function notFound() {
