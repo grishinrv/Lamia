@@ -29,6 +29,7 @@ services:
         links:
             - client
         ports:     
+          - "8080:80"
           - "4000:4000"
     client:
         image: php:7.4-fpm    
