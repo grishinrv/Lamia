@@ -28,13 +28,24 @@ public sealed class HomeController : ControllerBase
     public IActionResult Login(User user)
     {
         if (user == null)
+        {
+            _logger.LogTrace($"{nameof(Login)}: Parameter \"{nameof(user)}\" is missing");
             return BadRequest( new Error(ErrorType.ParameterIsMissing){Description = $"Parameter \"{nameof(user)}\" is missing"});
-        
-        if (string.IsNullOrEmpty(user.UserName))  
+        }
+
+        if (string.IsNullOrEmpty(user.UserName))
+        {
+            _logger.LogTrace($"{nameof(Login)}: \"UserName\" is missing");
             return BadRequest( new Error(ErrorType.ParameterIsMissing){Description = $"\"UserName\" is missing"});
-        
-        if (string.IsNullOrEmpty(user.Password))  
+        }
+
+
+        if (string.IsNullOrEmpty(user.Password))
+        {
+            _logger.LogTrace($"{nameof(Login)}: \"Password\" is missing");
             return BadRequest( new Error(ErrorType.ParameterIsMissing){Description = $"\"Password\" is missing"});
+        }
+
         
         IActionResult response = Unauthorized();        
         User validUser = GetUser(user);
@@ -55,6 +66,7 @@ public sealed class HomeController : ControllerBase
         }
         else
         {
+            _logger.LogTrace($"{nameof(Login)}: User not exists or password is wrong");
             return NotFound(new Error(ErrorType.IncorrectParameterValue)
                 {Description = "User not exists or password is wrong"});
         }
