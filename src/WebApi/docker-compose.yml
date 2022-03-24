@@ -20,12 +20,13 @@ services:
         volumes:
             - ./nginx.conf:/etc/nginx/nginx.conf
             - ./Client:/code
-            - ./site.conf:/etc/nginx/conf.d/site.conf
+            - ./site.conf:/etc/nginx/conf.d/default.conf
         depends_on:
             - webapi
         links:
             - client
         ports:
+          - "8080:80"          
           - "4000:4000"
     client:
         image: php:7.4-fpm        
