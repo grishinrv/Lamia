@@ -15,12 +15,18 @@ services:
           WEBAPI_USER_PASSWORD: ${WEBAPI_USER_PASSWORD}
         ports:
           - "5000:5000"
+    client:
+        image: ${DOCKER_REGISTRY}client
+        build:
+            context: .
+            dockerfile: Client/Dockerfile
+        ports:
+          - "5001:9000"        
     proxy:
         image: nginx:latest
         volumes:
-          - ./WebApi/nginx.conf:/etc/nginx/nginx.conf
-        depends_on: 
-          - webapi
+          - ./nginx.conf:/etc/nginx/nginx.conf
+        depends_on: [webapi, client]
         ports:
           - "4000:4000"
         
