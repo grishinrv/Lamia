@@ -17,11 +17,9 @@ services:
           - "5000:5000"
     client:
         image: ${DOCKER_REGISTRY}client
-        volumes:
-            - ./Client/Application/index.php:/var/www/html/index.php
         build:
-            context: .
-            dockerfile: Client/Dockerfile
+            context: ./Client
+            dockerfile: /Dockerfile
         ports:
           - "5001:9000"        
     proxy:
