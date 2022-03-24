@@ -68,7 +68,7 @@ public sealed class MoviesController : ControllerBase
         StringBuilder builder = new StringBuilder(_openMovieDbUriStr);
         builder.Append("/?");
         builder.Append("apikey=");
-        builder.Append(HttpUtility.UrlEncode(_config["OmdbApiKey"]));
+        builder.Append(HttpUtility.UrlEncode(Environment.GetEnvironmentVariable("WEBAPI_OMDBAPIKEY")));
         builder.Append("&t=");
         builder.Append(HttpUtility.UrlEncode(dto.Title));
         builder.Append("&y=");

@@ -7,7 +7,7 @@ using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Configuration.AddEnvironmentVariables(prefix: "webapi_");
+builder.Configuration.AddEnvironmentVariables();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -23,12 +23,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer =  builder.Configuration["Jwt:Issuer"],
-        ValidAudience =  builder.Configuration["Jwt:Audience"],
+        ValidIssuer =  Environment.GetEnvironmentVariable("WEBAPI_JWT_ISSUER"),
+        ValidAudience =  Environment.GetEnvironmentVariable("WEBAPI_JWT_AUDIENCE"),
         IssuerSigningKey = new
             SymmetricSecurityKey
             (Encoding.UTF8.GetBytes
-                (builder.Configuration["Jwt:Key"]))
+                (Environment.GetEnvironmentVariable("WEBAPI_JWT_KEY") ?? string.Empty))
     };
 });
 builder.Services.AddDistributedMemoryCache();

@@ -9,7 +9,8 @@ public sealed class UserRepository : IUserRepository
     public UserRepository(IConfiguration config)
     {
         _userStorage = new List<User>();
-        _userStorage.Add(new User {UserName = config["User:UserName"], Password = config["User:Password"]});
+        _userStorage.Add(new User {UserName = Environment.GetEnvironmentVariable("WEBAPI_USER_USERNAME"), 
+            Password = Environment.GetEnvironmentVariable("WEBAPI_USER_PASSWORD")});
     }
     public User GetUser(User user)
     {

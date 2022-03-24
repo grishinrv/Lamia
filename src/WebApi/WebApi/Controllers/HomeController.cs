@@ -41,7 +41,8 @@ public sealed class HomeController : ControllerBase
     
         if (validUser != null)  
         {
-            _generatedToken = _tokenService.BuildToken(_config["Jwt:Key"], _config["Jwt:Issuer"], validUser);
+            _generatedToken = _tokenService.BuildToken(Environment.GetEnvironmentVariable("WEBAPI_JWT_KEY"), 
+                Environment.GetEnvironmentVariable("WEBAPI_JWT_ISSUER"), validUser);
             if (!string.IsNullOrEmpty(_generatedToken)) 
             {
                 HttpContext.Session.SetString("Token", _generatedToken);
@@ -75,7 +76,7 @@ public sealed class HomeController : ControllerBase
         if (token == null)
             return Redirect(baseUrl + "/LoginForm");
         
-        if (!_tokenService.IsTokenValid(_config["Jwt:Key"], _config["Jwt:Issuer"], token)) 
+        if (!_tokenService.IsTokenValid(Environment.GetEnvironmentVariable("WEBAPI_JWT_KEY"), Environment.GetEnvironmentVariable("WEBAPI_JWT_ISSUER"), token)) 
             return Redirect(baseUrl + "/LoginForm");
         
         HttpContext.Response.Headers.Add("Token", FormatString(token, 50));
