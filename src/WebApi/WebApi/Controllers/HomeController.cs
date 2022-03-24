@@ -6,7 +6,7 @@ using WebApi.Services;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("Home")]
+[Route("api/Home")]
 public sealed class HomeController : ControllerBase
 {
     private readonly IConfiguration _config;        

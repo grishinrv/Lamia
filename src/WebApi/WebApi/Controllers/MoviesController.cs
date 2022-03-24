@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +9,7 @@ namespace WebApi.Controllers;
 
 
 [ApiController]
-[Route("Movies")]
+[Route("api/Movies")]
 [Authorize(Roles = "User")]
 public sealed class MoviesController : ControllerBase
 {

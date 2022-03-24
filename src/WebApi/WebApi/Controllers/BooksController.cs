@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("Books")]
+[Route("api/Books")]
 [Authorize(Roles = "User")]
 public sealed class BooksController : ControllerBase
 {
