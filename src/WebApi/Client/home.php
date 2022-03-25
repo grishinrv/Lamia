@@ -9,7 +9,7 @@
             <p>Movies</p>
         </div>
     </div>
-    <div class="row h-75" >
+    <div class="row h-25" >
         <div class="col form-group">
             <div class="container" >
                 <div class="form-group cellmargin">
