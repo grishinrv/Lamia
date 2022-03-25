@@ -66,20 +66,28 @@ async function postData(url = '', data = {}) {
     }
 }
 
-async function getPage(url = '') {
+async function getData(url = '') {
     // Default options are marked with *
-    await fetch(url).then(function (response) {
-        // The API call was successful!
-        return response.text();
-    }).then(function (html) {
-        // Convert the HTML string into a document object
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-
-    }).catch(function (err) {
-        // There was an error
-        console.warn('Something went wrong.', err);
+    const response = await fetch(url, {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'include', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *client
     });
+
+    try{
+        const result = await response.json();
+        return [response.status, result];
+    }
+    catch (e){
+        return [response.status, {}];
+    }
 }
 
 function isSuccessful(data){
