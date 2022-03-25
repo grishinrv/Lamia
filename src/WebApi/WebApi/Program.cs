@@ -15,8 +15,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "AllowSpecificOrigins",
         builder =>
         {
-            builder.WithOrigins(Environment.GetEnvironmentVariable("WEBAPI_ALLOWED_ORIGINS")?.Split(' ') ?? new string[1]{"http://localhost"})
-                .SetIsOriginAllowedToAllowWildcardSubdomains()
+            builder.WithOrigins(Environment.GetEnvironmentVariable("WEBAPI_ALLOWED_ORIGINS")?.Split(' ') ??
+                                new string[1] {"http://localhost"})
+                .AllowAnyMethod()
+                .AllowAnyHeader()
                 .AllowCredentials();
         });
 });
