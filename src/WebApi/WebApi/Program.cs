@@ -56,11 +56,10 @@ WebApplication app = builder.Build();
 
 //app.UseHttpsRedirection();
 
-app.UseAuthorization();
 
-app.MapControllers();
 app.UseAppException();
 app.UseSession();
+app.UseCors("AllowSpecificOrigins");
 app.Use(async (context, next) =>
 {
     string token = context.Session.GetString("Token");
@@ -73,5 +72,8 @@ app.Use(async (context, next) =>
 app.UseForwardedHeaders(new ForwardedHeadersOptions {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
+
+app.UseAuthorization();
+app.MapControllers();
 
 app.Run();
