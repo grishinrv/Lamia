@@ -18,7 +18,7 @@ function getRequestPath() {
 function getMethod(array $routes, $path) {
     // search for route
     foreach ($routes as $route => $method) {
-        if ($path === $route) {
+        if (strcasecmp($path, $route) == 0) {
             return $method;
         }
     }
