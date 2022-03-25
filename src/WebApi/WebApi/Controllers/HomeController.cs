@@ -58,7 +58,7 @@ public sealed class HomeController : ControllerBase
             {
                 _logger.LogTrace($"Generated Token: {_generatedToken}");
                 HttpContext.Session.SetString("Token", _generatedToken);
-                return RedirectToAction("Auth"); 
+                return Ok();
             }
             else
             {
@@ -79,29 +79,4 @@ public sealed class HomeController : ControllerBase
         return _userRepository.GetUser(userModel);
     }
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("Auth")]
-    [HttpGet]
-    public IActionResult Auth()
-    {
-        string clientHostName = Environment.GetEnvironmentVariable("CLIENT_INTERNAL_HOSTNAME");
-        string clientPort = Environment.GetEnvironmentVariable("CLIENT_INTERNAL_PORT");
-        string clientUrl = $"{Request.Scheme}://{clientHostName}:{clientPort}";
-        string token = HttpContext.Session.GetString("Token");
-        _logger.LogTrace($"Got Token: {token}");
-        
-        _logger.LogTrace($"Client (php)- {clientUrl}");
-        
-        if (token == null)
-            return Redirect(clientUrl + clientHostName + "/LoginForm");
-        
-        if (!_tokenService.IsTokenValid(Environment.GetEnvironmentVariable("WEBAPI_JWT_KEY"), 
-                Environment.GetEnvironmentVariable("WEBAPI_JWT_ISSUER"), 
-                Environment.GetEnvironmentVariable("WEBAPI_JWT_AUDIENCE"), 
-                token)) 
-            return Redirect(clientUrl + "/LoginForm");
-        
-        HttpContext.Response.Headers.Add("Token", token);
-        return Redirect(clientUrl + "/Home");
-    }
 }

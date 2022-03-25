@@ -2,6 +2,45 @@ function hostname(){
     return window.location.protocol + "//" + window.location.hostname;
 }
 
+function api(){
+    return hostname()+':4000/api';
+}
+
+function client(){
+    return hostname()+':8080';
+}
+
+function loadUrl(newLocation)
+{
+    window.location = newLocation;
+}
+
+const stringConstructor = "test".constructor;
+const arrayConstructor = [].constructor;
+const objectConstructor = ({}).constructor;
+
+function whatIsIt(object) {
+    if (object === null) {
+        return "null";
+    }
+    if (object === undefined) {
+        return "undefined";
+    }
+    if (object.constructor === stringConstructor) {
+        return "String";
+    }
+    if (object.constructor === arrayConstructor) {
+        return "Array";
+    }
+    if (object.constructor === objectConstructor) {
+        return "Object";
+    }
+    {
+        return "don't know";
+    }
+}
+
+
 async function postData(url = '', data = {}) {
     // Default options are marked with *
     const response = await fetch(url, {
@@ -17,8 +56,30 @@ async function postData(url = '', data = {}) {
         referrerPolicy: 'no-referrer', // no-referrer, *client
         body: JSON.stringify(data) // body data type must match "Content-Type" header
     });
-    const result = await response.json(); // parses JSON response into native JavaScript objects
-    return [response.status, result];
+
+    try{
+        const result = await response.json();
+        return [response.status, result];
+    }
+    catch (e){
+        return [response.status, {}];
+    }
+}
+
+async function getPage(url = '') {
+    // Default options are marked with *
+    await fetch(url).then(function (response) {
+        // The API call was successful!
+        return response.text();
+    }).then(function (html) {
+        // Convert the HTML string into a document object
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+    }).catch(function (err) {
+        // There was an error
+        console.warn('Something went wrong.', err);
+    });
 }
 
 function isSuccessful(data){
