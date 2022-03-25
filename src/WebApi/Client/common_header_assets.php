@@ -12,6 +12,7 @@
     <script src="/scripts/login.js"></script>
     <script src="/scripts/http_queries.js"></script>
     <script src="/scripts/book.js"></script>
+    <script src="/scripts/movie.js"></script>
     <style>
         body {
             font-family: 'Varela Round', sans-serif;

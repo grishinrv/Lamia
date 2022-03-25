@@ -18,16 +18,30 @@
                 <div class="form-group cellmargin">
                     <input type="button" class="btn btn-outline-warning" value="Search book" onclick="searchBook()">
                 </div>
-                <!--div class="form-group cellmargin">
-                    <label for="name" class="col-lg-4">Name:</label>
-                    <div class="col-lg-8">
-                        <input type="text" class="form-control classname" readonly id="bookname" />
-                    </div>
-                </div-->
             </div>
         </div>
         <div class="col form-group">
-            <div class="container">
+            <div class="container" >
+                <div class="form-group cellmargin">
+                    <input type="text" class="form-control" placeholder="Title" id="title">
+                </div>
+                <div class="form-group cellmargin">
+                    <input type="text" class="form-control" placeholder="Year" id="year">
+                </div>
+                <div class="form-group cellmargin">
+                    <input type="text" class="form-control" placeholder="Plot version" id="plot">
+                </div>
+                <div class="form-group cellmargin">
+                    <input type="button" class="btn btn-outline-warning" value="Search movie" onclick="searchMovie()">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row h-75" >
+        <div class="form-group cellmargin" height="300">
+            <label for="name" class="col-lg-4">Fetched data:</label>
+            <div class="col-lg-8" >
+                <p id="data"> <p/>
             </div>
         </div>
     </div>
