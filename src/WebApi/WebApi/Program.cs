@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.Middleware;
@@ -25,10 +26,20 @@ builder.Services.AddCors(options =>
 
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo("/tmp"));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(4);
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.HttpOnly = true;
+    //options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -58,9 +69,10 @@ WebApplication app = builder.Build();
 
 //app.UseHttpsRedirection();
 
-
 app.UseAppException();
+app.UseCookiePolicy();
 app.UseSession();
+
 app.UseCors("AllowSpecificOrigins");
 app.Use(async (context, next) =>
 {
