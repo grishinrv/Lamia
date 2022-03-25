@@ -4,7 +4,9 @@ $routes = [
 // for root or /index.php
     '/' => 'login',
 // root client
-    '/client' => 'login'
+    '/client' => 'login',
+// home page (books and movies querying)
+    '/home' => 'home'
 ];
 
 function getRequestPath() {
@@ -27,6 +29,10 @@ function getMethod(array $routes, $path) {
 
 function login() {
     include('login_form.php');
+}
+
+function home() {
+    include('home.php');
 }
 
 function notFound() {

@@ -84,20 +84,23 @@ public sealed class HomeController : ControllerBase
     [HttpGet]
     public IActionResult Auth()
     {
-        string baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-        _logger.LogTrace($"Got base url: {baseUrl}");
+        string clientHostName = Environment.GetEnvironmentVariable("CLIENT_INTERNAL_HOSTNAME");
+        string clientUrl = $"{Request.Scheme}://{clientHostName}";
         string token = HttpContext.Session.GetString("Token");
         _logger.LogTrace($"Got Token: {token}");
+        
+        _logger.LogTrace($"Client (php)- {clientUrl}");
+        
         if (token == null)
-            return Redirect(baseUrl + "/LoginForm");
+            return Redirect(clientUrl + clientHostName + "/LoginForm");
         
         if (!_tokenService.IsTokenValid(Environment.GetEnvironmentVariable("WEBAPI_JWT_KEY"), 
                 Environment.GetEnvironmentVariable("WEBAPI_JWT_ISSUER"), 
                 Environment.GetEnvironmentVariable("WEBAPI_JWT_AUDIENCE"), 
                 token)) 
-            return Redirect(baseUrl + "/LoginForm");
+            return Redirect(clientUrl + "/LoginForm");
         
         HttpContext.Response.Headers.Add("Token", token);
-        return Redirect(baseUrl + "/MainForm");
+        return Redirect(clientUrl + "/Home");
     }
 }

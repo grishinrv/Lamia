@@ -1,3 +1,7 @@
+function hostname(){
+    return window.location.protocol + "//" + window.location.hostname;
+}
+
 async function postData(url = '', data = {}) {
     // Default options are marked with *
     const response = await fetch(url, {
