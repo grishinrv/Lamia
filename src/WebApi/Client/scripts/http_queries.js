@@ -14,7 +14,14 @@ async function postData(url = '', data = {}) {
         body: JSON.stringify(data) // body data type must match "Content-Type" header
     });
     const result = await response.json(); // parses JSON response into native JavaScript objects
-    const status = response.headers.get("status");
-    console.log(status);
-    return result;
+    return [response.status, result];
 }
+
+function isSuccessful(data){
+    if (data[0] != 200){
+        alert(data[1].errorType +': ' + data[1].description);
+        return false;
+    }
+    return true;
+}
+
