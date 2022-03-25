@@ -84,7 +84,9 @@ public sealed class HomeController : ControllerBase
     public IActionResult Auth()
     {
         string baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
+        _logger.LogTrace($"Got base url: {baseUrl}");
         string token = HttpContext.Session.GetString("Token");
+        _logger.LogTrace($"Got Token: {token}");
         if (token == null)
             return Redirect(baseUrl + "/LoginForm");
         
