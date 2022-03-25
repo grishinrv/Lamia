@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+    webapi:
+        image: ${DOCKER_REGISTRY}lamia        
+        container_name: webapi
+        build:
+            context: .
+            dockerfile: WebApi/Dockerfile
+        environment:
+          WEBAPI_ALLOWED_ORIGINS: ${WEBAPI_ALLOWED_ORIGINS}
+          WEBAPI_OMDBAPIKEY: ${WEBAPI_OMDBAPIKEY}
+          WEBAPI_JWT_KEY: ${WEBAPI_JWT_KEY}
+          WEBAPI_JWT_ISSUER: ${WEBAPI_JWT_ISSUER}
+          WEBAPI_JWT_AUDIENCE: ${WEBAPI_JWT_AUDIENCE}
+          WEBAPI_USER_USERNAME: ${WEBAPI_USER_USERNAME}
+          WEBAPI_USER_PASSWORD: ${WEBAPI_USER_PASSWORD}
+          CLIENT_INTERNAL_HOSTNAME: ${CLIENT_INTERNAL_HOSTNAME}
+          CLIENT_INTERNAL_PORT: ${CLIENT_INTERNAL_PORT}
+        ports:
+          - "5000:5000"
+    proxy:
+        image: nginx:latest
+        container_name: proxy
+        volumes:            
+            - ./Client:/code
+            - ./nginx.conf:/etc/nginx/nginx.conf            
+            - ./client.conf:/etc/nginx/conf.d/client.conf  
+            - ./webapi.conf:/etc/nginx/conf.d/webapi.conf
+        depends_on:
+            - webapi
+        links:
+            - client
+        ports:     
+          - "${CLIENT_INTERNAL_PORT}:80"
+          - "4000:4000"
+    client:
+        image: php:7.4-fpm    
+        container_name: client    
+        volumes:
+            - ./Client:/code
+        
