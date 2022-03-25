@@ -25,6 +25,7 @@ public sealed class BooksController : ControllerBase
     [HttpGet("GetByIsbn")]
     public async Task<IActionResult> GetByIsbn(string isbn)
     {
+        _logger.LogTrace($"{nameof(GetByIsbn)}: {isbn}");
         if (string.IsNullOrWhiteSpace(isbn))
             return BadRequest( new Error(ErrorType.ParameterIsMissing){Description = $"Parameter \"{nameof(isbn)}\" is missing"});
         
