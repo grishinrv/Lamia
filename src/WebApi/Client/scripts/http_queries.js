@@ -18,7 +18,8 @@ async function postData(url = '', data = {}) {
 }
 
 function isSuccessful(data){
-    if (data[0] != 200){
+    const firstDigitStr = String(data[0])[0];
+    if (firstDigitStr == '4' || firstDigitStr == '5'){
         alert(data[1].errorType +': ' + data[1].description);
         return false;
     }
