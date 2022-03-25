@@ -3,7 +3,7 @@ function searchBook() {
     getData(  api() + '/books/getByIsbn?isbn=' +isbn )
         .then((response) => {
             if (isSuccessful(response)){
-                alert(response[1])
+                alert(response[1].stringify())
             }
         });
 }

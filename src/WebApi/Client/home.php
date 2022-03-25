@@ -18,9 +18,12 @@
                 <div class="form-group cellmargin">
                     <input type="button" class="btn btn-outline-warning" value="Search book" onclick="searchBook()">
                 </div>
-                <div class="form-group cellmargin">
-                    <input type="text" class="form-control classname" value="Demo" readonly />
-                </div>
+                <!--div class="form-group cellmargin">
+                    <label for="name" class="col-lg-4">Name:</label>
+                    <div class="col-lg-8">
+                        <input type="text" class="form-control classname" readonly id="bookname" />
+                    </div>
+                </div-->
             </div>
         </div>
         <div class="col form-group">
