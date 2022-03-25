@@ -16,6 +16,7 @@ services:
           WEBAPI_USER_USERNAME: ${WEBAPI_USER_USERNAME}
           WEBAPI_USER_PASSWORD: ${WEBAPI_USER_PASSWORD}
           CLIENT_INTERNAL_HOSTNAME: ${CLIENT_INTERNAL_HOSTNAME}
+          CLIENT_INTERNAL_PORT: ${CLIENT_INTERNAL_PORT}
         ports:
           - "5000:5000"
     proxy:
@@ -31,7 +32,7 @@ services:
         links:
             - client
         ports:     
-          - "8080:80"
+          - "${CLIENT_INTERNAL_PORT}:80"
           - "4000:4000"
     client:
         image: php:7.4-fpm    

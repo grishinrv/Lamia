@@ -85,7 +85,8 @@ public sealed class HomeController : ControllerBase
     public IActionResult Auth()
     {
         string clientHostName = Environment.GetEnvironmentVariable("CLIENT_INTERNAL_HOSTNAME");
-        string clientUrl = $"{Request.Scheme}://{clientHostName}";
+        string clientPort = Environment.GetEnvironmentVariable("CLIENT_INTERNAL_PORT");
+        string clientUrl = $"{Request.Scheme}://{clientHostName}:{clientPort}";
         string token = HttpContext.Session.GetString("Token");
         _logger.LogTrace($"Got Token: {token}");
         
