@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using System.Web;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
@@ -10,7 +11,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/Movies")]
-[Authorize(Roles = "User")]
+[Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public sealed class MoviesController : ControllerBase
 {
     private readonly ILogger<MoviesController> _logger;

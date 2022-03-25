@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Services;
@@ -39,23 +40,23 @@ public sealed class HomeController : ControllerBase
             return BadRequest( new Error(ErrorType.ParameterIsMissing){Description = $"\"UserName\" is missing"});
         }
 
-
         if (string.IsNullOrEmpty(user.Password))
         {
             _logger.LogTrace($"{nameof(Login)}: \"Password\" is missing");
             return BadRequest( new Error(ErrorType.ParameterIsMissing){Description = $"\"Password\" is missing"});
         }
 
-        
-        IActionResult response = Unauthorized();        
         User validUser = GetUser(user);
     
         if (validUser != null)  
         {
             _generatedToken = _tokenService.BuildToken(Environment.GetEnvironmentVariable("WEBAPI_JWT_KEY"), 
-                Environment.GetEnvironmentVariable("WEBAPI_JWT_ISSUER"), validUser);
+                Environment.GetEnvironmentVariable("WEBAPI_JWT_ISSUER"), 
+                Environment.GetEnvironmentVariable("WEBAPI_JWT_AUDIENCE"),
+                validUser);
             if (!string.IsNullOrEmpty(_generatedToken)) 
             {
+                _logger.LogTrace($"Generated Token: {_generatedToken}");
                 HttpContext.Session.SetString("Token", _generatedToken);
                 return RedirectToAction("Auth"); 
             }
@@ -78,7 +79,7 @@ public sealed class HomeController : ControllerBase
         return _userRepository.GetUser(userModel);
     }
 
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("Auth")]
     [HttpGet]
     public IActionResult Auth()
@@ -90,22 +91,13 @@ public sealed class HomeController : ControllerBase
         if (token == null)
             return Redirect(baseUrl + "/LoginForm");
         
-        if (!_tokenService.IsTokenValid(Environment.GetEnvironmentVariable("WEBAPI_JWT_KEY"), Environment.GetEnvironmentVariable("WEBAPI_JWT_ISSUER"), token)) 
+        if (!_tokenService.IsTokenValid(Environment.GetEnvironmentVariable("WEBAPI_JWT_KEY"), 
+                Environment.GetEnvironmentVariable("WEBAPI_JWT_ISSUER"), 
+                Environment.GetEnvironmentVariable("WEBAPI_JWT_AUDIENCE"), 
+                token)) 
             return Redirect(baseUrl + "/LoginForm");
         
-        HttpContext.Response.Headers.Add("Token", FormatString(token, 50));
+        HttpContext.Response.Headers.Add("Token", token);
         return Redirect(baseUrl + "/MainForm");
     }
-
-
-    private string FormatString(string stringToSplit, int chunkSize)
-    {
-        IEnumerable<string> data = Enumerable.Range(0, stringToSplit.Length / chunkSize).Select(i => stringToSplit.Substring (i * chunkSize, chunkSize));
-        string result = string.Empty;
-        foreach (string str in data)            
-        {
-            result += Environment.NewLine + str;
-        }
-        return result;      
-    }    
 }
